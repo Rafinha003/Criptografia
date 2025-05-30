@@ -9,11 +9,12 @@
 char texto[MAX_SIZE]; 
 int texto_carregado = 0;
 
+
 void lerArquivo() {
     char nomeArquivo[100];
     FILE *arquivo;
 
-    printf("Digite o nome do arquivo para ler: ");
+    printf("Digite o caminho do arquivo para ler: ");
     scanf("%s", nomeArquivo);
 
     arquivo = fopen(nomeArquivo, "r");
@@ -23,12 +24,15 @@ void lerArquivo() {
         return;
     }
 
-    fread(texto, sizeof(char), MAX_SIZE, arquivo);
-    fclose(arquivo);
 
+    size_t lidos = fread(texto, sizeof(char), MAX_SIZE - 1, arquivo);
+    texto[lidos] = '\0'; 
+
+    fclose(arquivo);
     texto_carregado = 1;
     printf("Arquivo lido com sucesso!\n");
 }
+
 
 void criptografar() {
     if (!texto_carregado) {
@@ -44,7 +48,9 @@ void criptografar() {
     }
 
     printf("Texto criptografado com sucesso!\n");
+    printf("Texto criptografado:\n%s\n", texto);
 }
+
 
 void descriptografar() {
     if (!texto_carregado) {
@@ -60,7 +66,9 @@ void descriptografar() {
     }
 
     printf("Texto descriptografado com sucesso!\n");
+    printf("Texto descriptografado:\n%s\n", texto);
 }
+
 
 void salvarArquivo() {
     if (!texto_carregado) {
@@ -71,7 +79,7 @@ void salvarArquivo() {
     char nomeArquivo[100];
     FILE *arquivo;
 
-    printf("Digite o nome do arquivo para salvar: ");
+    printf("Digite o caminho do arquivo para salvar: ");
     scanf("%s", nomeArquivo);
 
     arquivo = fopen(nomeArquivo, "w");
@@ -87,6 +95,7 @@ void salvarArquivo() {
     printf("Arquivo salvo com sucesso!\n");
 }
 
+
 int main() {
     int opcao;
 
@@ -99,7 +108,7 @@ int main() {
         printf("5 - Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
-        getchar();  // Limpar o buffer do teclado
+        getchar();  
 
         switch (opcao) {
             case 1:
